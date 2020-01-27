@@ -3,15 +3,11 @@ const builds = require("./builds");
 const { store, addProject } = require("../../redux");
 
 router.get("/", (req, res) => {
-  // TODO retrieve and send all projects
-  res.status(200).json(store.getState());
-
-  // res.status(418).json({ message: "Not Implemented" });
+  res.status(200).json(store.getState().projects);
 });
 
 router.post("/", (req, res) => {
   const project = req.body;
-  // TODO Add new project, give it an id and send it back.
   const action = addProject(project);
   store.dispatch(action);
   res.status(201).end();
@@ -19,8 +15,17 @@ router.post("/", (req, res) => {
 
 router.get("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  // TODO retrieve and send project with given id
-  res.status(418).json({ message: "Not Implemented" });
+  const data = store.getState().projects;
+  for (let project of data) {
+    if (project.id === projectId) {
+      res.status(200).send(project);
+      return;
+    }
+  }
+  res
+    .status(418)
+    .json({ message: "project not found" })
+    .end();
 });
 
 router.patch("/:projectId", (req, res) => {
