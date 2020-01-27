@@ -13,6 +13,10 @@ const patchProject = (newProject, oldProject) => ({
   oldProject,
 });
 
+const deleteProject = (project) => ({
+  type: "DELETE_PROJECT",
+  project,
+});
 // Reducer
 const reducer = (state = { projects: [], builds: [] }, action) => {
   switch (action.type) {
@@ -27,6 +31,11 @@ const reducer = (state = { projects: [], builds: [] }, action) => {
           action.oldProject[key] = action.newProject[key];
         }
       }
+      return state;
+    }
+    case "DELETE_PROJECT": {
+      const index = state.projects.indexOf(action.project);
+      state.projects.splice(index, 1);
       return state;
     }
   }
@@ -90,4 +99,4 @@ const initialState = {
 };
 const store = redux.createStore(reducer, initialState);
 
-module.exports = { store, addProject, patchProject };
+module.exports = { store, addProject, patchProject, deleteProject };

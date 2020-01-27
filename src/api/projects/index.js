@@ -1,6 +1,11 @@
 const router = require("express").Router();
 const builds = require("./builds");
-const { store, addProject, patchProject } = require("../../redux");
+const {
+  store,
+  addProject,
+  patchProject,
+  deleteProject,
+} = require("../../redux");
 
 router.get("/", (req, res) => {
   res.status(200).json(store.getState().projects);
@@ -16,7 +21,7 @@ router.post("/", (req, res) => {
 router.get("/:projectId", (req, res) => {
   const { projectId } = req.params;
   const data = store.getState().projects;
-  for (let project of data) {
+  for (const project of data) {
     if (project.id === projectId) {
       res.status(200).send(project);
       return;
@@ -45,8 +50,14 @@ router.patch("/:projectId", (req, res) => {
 
 router.delete("/:projectId", (req, res) => {
   const { projectId } = req.params;
-  // TODO delete project, return status 200 with no body on success
-  res.status(418).json({ message: "Not Implemented" });
+  const data = store.getState().projects;
+  for (const project of data) {
+    if (project.id === projectId) {
+      const action = deleteProject(project);
+      store.dispatch(action);
+      res.status(200).end();
+    }
+  }
 });
 
 router.use("/:projectId/builds", builds);
