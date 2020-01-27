@@ -1,4 +1,5 @@
 const redux = require("redux");
+const shortid = require("shortid");
 
 // Actions
 // -add projects
@@ -13,11 +14,18 @@ const patchProject = (newProject, oldProject) => ({
   oldProject,
 });
 
+const deleteProject = (index, project) => ({
+  type: "DELETE_PROJECT",
+  index,
+  project,
+});
+
 // Reducer
 const reducer = (state = { projects: [], builds: [] }, action) => {
   switch (action.type) {
     //-add projects case
     case "ADD_PROJECT": {
+      action.project.id = shortid();
       state.projects = [...state.projects, action.project];
       return state;
     }
@@ -29,65 +37,20 @@ const reducer = (state = { projects: [], builds: [] }, action) => {
       }
       return state;
     }
+    case "DELETE_PROJECT": {
+      if (action.index === 0) state.projects.splice(action.index, 1);
+      else state.projects.splice(action.index, action.index);
+
+      return state;
+    }
   }
   return state;
 };
 
 // Store
 const initialState = {
-  projects: [
-    {
-      id: "hykjdLm",
-      name: "vscode",
-      url: "git@github.com:Microsoft/vscode.git",
-      buildCommand: "yarn && yarn test",
-      language: "JavaScript",
-    },
-    {
-      id: "2",
-      name: "nel",
-      url: "git@github.com:Microsoft/vscode.git",
-      buildCommand: "yarn && yarn test",
-      language: "JavaScript",
-    },
-    {
-      id: "asdf2",
-      name: "chrome",
-      url: "git@github.com:Microsoft/vscode.git",
-      buildCommand: "yarn && yarn test",
-      language: "JavaScript",
-    },
-    {
-      id: "1",
-      name: "travis",
-      url: "git@github.com:Microsoft/vscode.git",
-      buildCommand: "yarn && yarn test",
-      language: "JavaScript",
-    },
-  ],
-  builds: [
-    {
-      buildNumber: 65481,
-      status: "Failed",
-      output: "48 out of 13325 Tests failed.",
-    },
-    {
-      buildNumber: 65482,
-      status: "Failed",
-      output: "48 out of 13325 Tests failed.",
-    },
-    {
-      buildNumber: 65483,
-      status: "Passed",
-      output: "48 out of 13325 Tests Passed.",
-    },
-    {
-      buildNumber: 65484,
-      status: "Passed",
-      output: "48 out of 13325 Tests Passed.",
-    },
-  ],
+  projects: [],
 };
 const store = redux.createStore(reducer, initialState);
 
-module.exports = { store, addProject, patchProject };
+module.exports = { store, addProject, patchProject, deleteProject };
