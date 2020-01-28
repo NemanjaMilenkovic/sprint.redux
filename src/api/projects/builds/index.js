@@ -1,9 +1,31 @@
 const router = require("express").Router({ mergeParams: true });
 
+const { store } = require("../../../redux");
+
 router.get("/", (req, res) => {
+  // console.log("in--------->");
   const { projectId } = req.params;
-  // TODO Get and return all builds of given project
-  res.status(418).json({ message: "Not Implemented" });
+  if (projectId !== "undefined") {
+    const data = store.getState().projects;
+    for (const project of data) {
+      if (project.id === projectId) {
+        if (project.builds !== undefined) {
+          // console.log("project.builds :", project.builds);
+          res.status(200).json({ builds: project.builds });
+          return;
+        }
+        res
+          .status(418)
+          .json({ message: "project does not have builds" })
+          .end();
+      }
+    }
+  } else {
+    res
+      .status(418)
+      .json({ message: "project not found" })
+      .end();
+  }
 });
 
 router.post("/", (req, res) => {
