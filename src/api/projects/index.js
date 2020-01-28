@@ -8,9 +8,10 @@ const {
 } = require("../../redux");
 
 router.get("/", (req, res) => {
-  res.status(200).json(store.getState());
+  res.status(200).json({ projects: store.getState() });
 });
 
+// TODO need to fix projects routes accounting for how we changed our initial state
 router.post("/", (req, res) => {
   const project = req.body;
   const action = addProject(project);

@@ -21,7 +21,7 @@ const deleteProject = (index, project) => ({
 });
 
 // Reducer
-const reducer = (state = { projects: [], builds: [] }, action) => {
+const reducer = (state = [], action) => {
   switch (action.type) {
     //-add projects case
     case "ADD_PROJECT": {
@@ -48,38 +48,40 @@ const reducer = (state = { projects: [], builds: [] }, action) => {
 };
 
 // Store
-const initialState = {
-  projects: [
-    // {
-    //   id: "2",
-    //   name: "travis",
-    //   url: "git@github.com:Microsoft/vscode.git",
-    //   buildCommand: "yarn && yarn test",
-    //   language: "JavaScript",
-    // },
-    // {
-    //   id: "1",
-    //   name: "travis",
-    //   url: "vscode.git",
-    //   buildCommand: "yarn && yarn test",
-    //   language: "JavaScript",
-    // },
-    // {
-    //   id: "6",
-    //   name: "travis",
-    //   url: "git@github.com:Microsoft/vscode.git",
-    //   buildCommand: "yarn && yarn test",
-    //   language: "JavaScript",
-    // },
-    // {
-    //   id: "9",
-    //   name: "travis",
-    //   url: "vscode.git",
-    //   buildCommand: "yarn && yarn test",
-    //   language: "JavaScript",
-    // },
-  ],
-};
+const initialState = [
+  // {
+  //   projects: [
+  //     {
+  //       id: "2",
+  //       name: "travis",
+  //       url: "git@github.com:Microsoft/vscode.git",
+  //       buildCommand: "yarn && yarn test",
+  //       language: "JavaScript",
+  //     },
+  //     {
+  //       id: "1",
+  //       name: "travis",
+  //       url: "vscode.git",
+  //       buildCommand: "yarn && yarn test",
+  //       language: "JavaScript",
+  //     },
+  //     {
+  //       id: "6",
+  //       name: "travis",
+  //       url: "git@github.com:Microsoft/vscode.git",
+  //       buildCommand: "yarn && yarn test",
+  //       language: "JavaScript",
+  //     },
+  //     {
+  //       id: "9",
+  //       name: "travis",
+  //       url: "vscode.git",
+  //       buildCommand: "yarn && yarn test",
+  //       language: "JavaScript",
+  //     },
+  //   ],
+  // },
+];
 const store = redux.createStore(reducer, initialState);
 
 module.exports = { store, addProject, patchProject, deleteProject };
